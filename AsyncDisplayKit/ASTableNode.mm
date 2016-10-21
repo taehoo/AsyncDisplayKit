@@ -253,6 +253,20 @@ ASEnvironmentCollectionTableSetEnvironmentState(_environmentStateLock)
   return [self.rangeController setTuningParameters:tuningParameters forRangeMode:rangeMode rangeType:rangeType];
 }
 
+- (void)scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UITableViewScrollPosition)scrollPosition animated:(BOOL)animated
+{
+  ASDisplayNodeAssertMainThread();
+  ASTableView *tableView = self.view;
+
+  indexPath = [tableView convertIndexPathFromTableNode:indexPath waitingIfNeeded:YES];
+
+  if (indexPath != nil) {
+    [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
+  } else {
+    NSLog(@"Failed to scroll to row at index path %@ because the row never reached the view.", indexPath);
+  }
+}
+
 #pragma mark - Querying Data
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section
